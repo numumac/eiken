@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英検対策 学習ノート</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic",
+                   Meiryo, sans-serif;
+      background: #f4f7fb;
+      color: #263238;
+    }
+
+    header {
+      background: linear-gradient(135deg, #173f73, #2d6ca8);
+      color: white;
+      padding: 55px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+    }
+
+    header p {
+      margin-top: 12px;
+      font-size: 1.05rem;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 70px;
+    }
+
+    h2 {
+      color: #173f73;
+      border-bottom: 3px solid #d6e3f0;
+      padding-bottom: 10px;
+    }
+
+    .intro {
+      line-height: 1.8;
+      margin-bottom: 35px;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 18px;
+      margin: 25px 0 50px;
+    }
+
+    .note {
+      display: block;
+      background: white;
+      border-radius: 12px;
+      padding: 28px 18px;
+      text-decoration: none;
+      color: #263238;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border-top: 5px solid #2d6ca8;
+      transition: 0.2s;
+      min-height: 155px;
+    }
+
+    .note:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+    }
+
+    .note .letter {
+      font-size: 0.85rem;
+      color: #708090;
+      margin-bottom: 7px;
+    }
+
+    .note strong {
+      display: block;
+      color: #173f73;
+      font-size: 1.18rem;
+      margin-bottom: 10px;
+    }
+
+    .note span {
+      font-size: 0.9rem;
+      color: #687680;
+      line-height: 1.5;
+    }
+
+    .links {
+      background: white;
+      border-radius: 12px;
+      padding: 8px 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .link-item {
+      padding: 20px 5px;
+      border-bottom: 1px solid #e3e8ee;
+    }
+
+    .link-item:last-child {
+      border-bottom: none;
+    }
+
+    .link-item a {
+      color: #1769aa;
+      font-size: 1.08rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .link-item a:hover {
+      text-decoration: underline;
+    }
+
+    .link-item p {
+      margin: 6px 0 0;
+      color: #687680;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      color: #7b8790;
+      padding: 25px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>英検対策 学習ノート</h1>
+  <p>EIKEN Study Notebook</p>
+</header>
+
+<main>
+
+  <p class="intro">
+    英検合格に向けた個人学習ノートです。
+    語彙・熟語から長文、リスニング、英作文、面接まで、
+    分野別に学習内容を整理していきます。
+  </p>
+
+  <h2>📚 英語ノート</h2>
+
+  <div class="notes">
+
+    <a class="note" href="a.html">
+      <div class="letter">NOTE A</div>
+      <strong>基本単語・熟語</strong>
+      <span>
+        基本動詞、句動詞、熟語、重要表現を実践的に学習
+      </span>
+    </a>
+
+    <a class="note" href="b.html">
+      <div class="letter">NOTE B</div>
+      <strong>1級重要語彙</strong>
+      <span>
+        英検1級で押さえておきたい重要単語・語法・例文
+      </span>
+    </a>
+
+    <a class="note" href="c.html">
+      <div class="letter">NOTE C</div>
+      <strong>長文・リスニング</strong>
+      <span>
+        長文読解、ニュース英語、リスニング、音読練習
+      </span>
+    </a>
+
+    <a class="note" href="d.html">
+      <div class="letter">NOTE D</div>
+      <strong>英作文</strong>
+      <span>
+        意見論述、英文要約、論理構成、表現力の強化
+      </span>
+    </a>
+
+    <a class="note" href="e.html">
+      <div class="letter">NOTE E</div>
+      <strong>面接・スピーキング</strong>
+      <span>
+        2分間スピーチ、Q&amp;A、発音、即答練習
+      </span>
+    </a>
+
+  </div>
+
+
+  <h2>🔗 学習リンク集</h2>
+
+  <div class="links">
+
+    <div class="link-item">
+      <a href="https://www.eiken.or.jp/eiken/"
+         target="_blank" rel="noopener noreferrer">
+        英検 公式サイト
+      </a>
+      <p>
+        公益財団法人 日本英語検定協会の英検公式サイト
+      </p>
+    </div>
+
+    <div class="link-item">
+      <a href="https://www.eiken.or.jp/eiken/exam/"
+         target="_blank" rel="noopener noreferrer">
+        英検 過去問・試験内容
+      </a>
+      <p>
+        各級の過去問、解答、リスニング、試験内容などを確認
+      </p>
+    </div>
+
+    <div class="link-item">
+      <a href="https://www.eiken.or.jp/eiken/exam/grade_1/"
+         target="_blank" rel="noopener noreferrer">
+        英検1級 過去問・試験内容
+      </a>
+      <p>
+        英検1級の過去問、解答、リスニング音源、二次試験対策
+      </p>
+    </div>
+
+    <div class="link-item">
+      <a href="https://www.youtube.com/@bbclearningenglish"
+         target="_blank" rel="noopener noreferrer">
+        BBC Learning English
+      </a>
+      <p>
+        ニュース英語、語彙、リスニング、発音などの英語学習
+      </p>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  EIKEN Study Notebook
+</footer>
+
+</body>
+</html>
