@@ -10,7 +10,7 @@
 .sectiontitle{font-weight:800;margin:4px 0 10px}
 .hidden{display:none!important}
 @media(max-width:650px){.modebar{grid-template-columns:1fr 1fr}.filterrow select{width:100%}}
-</style></head><body><header><div class="head"><h1>英検 音読・リーディング250</h1><span class="count" id="progress"></span></div></header><main>
+.speechbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0;padding:12px;background:#f0f6ff;border-radius:10px}.speechbar button{padding:8px 12px}.speechbar select{max-width:190px}.speechbar label{font-size:14px}.body.concealed{filter:blur(9px);user-select:none}.speechnote{font-size:12px;color:#444;width:100%}</style></head><body><header><div class="head"><h1>英検 音読・リーディング250</h1><span class="count" id="progress"></span></div></header><main>
 <div class="modebar">
   <button class="modebtn active" data-mode="combo" onclick="setMode('combo')">① 分野 × レベル</button>
   <button class="modebtn" data-mode="theme" onclick="setMode('theme')">② 分野別</button>
@@ -109,18 +109,43 @@ function render(){
   e.innerHTML=a.length?a.map(x=>`<div class="item ${state[x.num]?.done?'done':''}"><div class="no">No.${String(x.num).padStart(3,'0')}</div><div onclick="openItem(${x.num})" style="cursor:pointer"><div class="ttl">${esc(x.title)}</div><div class="meta">${esc(x.theme)} ｜ ${esc(normalizeLevel(x.level))}</div><div class="study">${state[x.num]?.done?'✓ 学習済み':''}</div></div><button class="fav" onclick="toggleFav(${x.num},event)">${state[x.num]?.fav?'★':'☆'}</button></div>`).join(''):'<div class="empty">該当する教材がありません。</div>';
 }
 window.toggleFav=(n,e)=>{e.stopPropagation();state[n]=state[n]||{};state[n].fav=!state[n].fav;save();render()};
-window.openItem=n=>{
+window.openItem=n=>{stopSpeech();
   let x=DATA.find(z=>z.num===n),d=document.getElementById('detail');
   let extras=(x.extra||[]).map(z=>`<details><summary>${esc(z.title)}</summary><div class="pre">${esc(z.text)}</div></details>`).join('');
-  d.innerHTML=`<h2>No.${String(n).padStart(3,'0')}｜${esc(x.title)}</h2>${x.subtitle?`<div>${esc(x.subtitle)}</div>`:''}<span class="badge">${esc(x.theme)}</span><span class="badge">${esc(normalizeLevel(x.level))}</span>${x.special?'<span class="badge">特別教材</span>':''}<div class="body">${esc(x.body)}</div>${x.chunks?`<details><summary>チャンク音読</summary><div class="pre">${esc(x.chunks)}</div></details>`:''}${x.translation?`<details><summary>日本語訳</summary><div class="pre">${esc(x.translation)}</div></details>`:''}${x.important?`<details><summary>重要表現</summary><div class="pre important">${esc(x.important)}</div></details>`:''}${x.audio?`<details><summary>音読 POINT</summary><div class="pre">${esc(x.audio)}</div></details>`:''}${x.wit?`<details><summary>WIT POINT・解説</summary><div class="pre">${esc(x.wit)}</div></details>`:''}${extras}<div class="nav"><button onclick="prev(${n})">← 前へ</button><button onclick="toggleDone(${n})">${state[n]?.done?'✓ 学習済み':'学習済みにする'}</button><button onclick="next(${n})">次へ →</button><button onclick="closeDetail()">閉じる</button></div>`;
-  d.classList.add('open');d.scrollIntoView({behavior:'smooth',block:'start'});
+  d.innerHTML=`<h2>No.${String(n).padStart(3,'0')}｜${esc(x.title)}</h2>${x.subtitle?`<div>${esc(x.subtitle)}</div>`:''}<span class="badge">${esc(x.theme)}</span><span class="badge">${esc(normalizeLevel(x.level))}</span>${x.special?'<span class="badge">特別教材</span>':''}<div class="speechbar"><button onclick="speakItem(${n})">▶ 読み上げ</button><button onclick="pauseSpeech()">⏸ 一時停止</button><button onclick="resumeSpeech()">⏵ 再開</button><button onclick="stopSpeech()">■ 停止</button><label>速度 <select id="speechRate" onchange="setSpeechRate(this.value)"><option value="0.7">0.7倍</option><option value="0.85">0.85倍</option><option value="1" selected>1.0倍</option><option value="1.15">1.15倍</option><option value="1.3">1.3倍</option></select></label><label>音声 <select id="speechVoice" onchange="setSpeechVoice(this.value)"></select></label><button onclick="toggleEnglish()">英文を隠す／表示</button><span class="speechnote" id="speechStatus">端末に搭載された英語音声で読み上げます。音声は端末によって異なります。</span></div><div id="englishBody" class="body">${esc(englishOnly(x.body))}</div>${x.chunks?`<details><summary>チャンク音読</summary><div class="pre">${esc(x.chunks)}</div></details>`:''}${x.translation?`<details><summary>日本語訳</summary><div class="pre">${esc(x.translation)}</div></details>`:''}${x.important?`<details><summary>重要表現</summary><div class="pre important">${esc(x.important)}</div></details>`:''}${x.audio?`<details><summary>音読 POINT</summary><div class="pre">${esc(x.audio)}</div></details>`:''}${x.wit?`<details><summary>WIT POINT・解説</summary><div class="pre">${esc(x.wit)}</div></details>`:''}${extras}<div class="nav"><button onclick="prev(${n})">← 前へ</button><button onclick="toggleDone(${n})">${state[n]?.done?'✓ 学習済み':'学習済みにする'}</button><button onclick="next(${n})">次へ →</button><button onclick="closeDetail()">閉じる</button></div>`;
+  populateVoices();d.classList.add('open');d.scrollIntoView({behavior:'smooth',block:'start'});
 };
-window.closeDetail=()=>document.getElementById('detail').classList.remove('open');
+window.closeDetail=()=>{stopSpeech();document.getElementById('detail').classList.remove('open')};
 window.toggleDone=n=>{state[n]=state[n]||{};state[n].done=!state[n].done;save();render();openItem(n)};
 window.prev=n=>openItem(Math.max(1,n-1)); window.next=n=>openItem(Math.min(250,n+1));
 comboTheme.addEventListener('change',render); comboLevel.addEventListener('change',render); levelOnly.addEventListener('change',render);
 document.getElementById('q').addEventListener('input',render);
 document.getElementById('clearSearch').onclick=()=>{document.getElementById('q').value='';render()};
 document.getElementById('showFav').onclick=()=>{favOnly=!favOnly;document.getElementById('showFav').textContent=favOnly?'★ お気に入りのみ':'★ お気に入り';render()};
+
+// Read only the English passage, excluding embedded Japanese notes and exercise labels.
+function englishOnly(body){return String(body||'').split(/\n(?:重要表現|音読POINT|WIT POINT|解説|日本語訳|内容確認|音読トレーニング)(?:\n|$)/)[0].trim();}
+let voiceRate=1,voiceIndex='',utterance=null;
+function englishVoices(){return speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));}
+function populateVoices(){const el=document.getElementById('speechVoice');if(!el)return;const vv=englishVoices();el.innerHTML=vv.length?vv.map((v,i)=>`<option value="${i}">${esc(v.name)} (${esc(v.lang)})</option>`).join(''):'<option value="">英語音声を読み込み中</option>';let index=vv.findIndex(v=>v.lang==='en-US');if(index<0)index=0;el.value=voiceIndex!==''&&vv[Number(voiceIndex)]?voiceIndex:String(index);}
+if('speechSynthesis' in window){speechSynthesis.addEventListener?.('voiceschanged',populateVoices);}
+window.setSpeechRate=v=>{voiceRate=Number(v)};
+window.setSpeechVoice=v=>{voiceIndex=v};
+window.stopSpeech=()=>{if('speechSynthesis' in window)speechSynthesis.cancel();utterance=null};
+window.pauseSpeech=()=>{if('speechSynthesis' in window)speechSynthesis.pause()};
+window.resumeSpeech=()=>{if('speechSynthesis' in window)speechSynthesis.resume()};
+window.toggleEnglish=()=>document.getElementById('englishBody')?.classList.toggle('concealed');
+window.speakItem=n=>{
+ const status=document.getElementById('speechStatus');
+ if(!('speechSynthesis' in window)){if(status)status.textContent='このブラウザは読み上げに対応していません。';return;}
+ stopSpeech();const x=DATA.find(y=>y.num===n);if(!x)return;
+ const u=new SpeechSynthesisUtterance(englishOnly(x.body));u.lang='en-US';u.rate=voiceRate;
+ const voices=englishVoices();const sel=document.getElementById('speechVoice');if(sel&&voices[Number(sel.value)])u.voice=voices[Number(sel.value)];
+ u.onstart=()=>{if(status)status.textContent='読み上げ中…'};
+ u.onend=()=>{if(status)status.textContent='読み上げ終了'};
+ u.onerror=()=>{if(status)status.textContent='読み上げできませんでした。端末の音声設定をご確認ください。'};
+ utterance=u;speechSynthesis.speak(u);
+};
+
 initSelects(); render();
 </script></body></html>
